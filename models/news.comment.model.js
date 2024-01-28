@@ -20,5 +20,5 @@ const newsCommentsSchema = Schema(
   }
 );
 
-const newsComments = model("newsComments", newsCommentsSchema);
-module.exports = newsComments;
+const NewsComments = model("NewsComments", newsCommentsSchema);
+module.exports = NewsComments;

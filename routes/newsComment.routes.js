@@ -3,6 +3,6 @@ const {
   handleCreateComment,
 } = require("../controllers/newsComment.controller");
 
-newsCommentRouter.post("/", handleCreateComment);
+newsCommentRouter.post("/:id", handleCreateComment);
 
 module.exports = newsCommentRouter;

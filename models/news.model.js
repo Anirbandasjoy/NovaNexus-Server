@@ -14,7 +14,7 @@ const newsSchema = Schema(
     },
     rating: {
       number: {
-        type: number,
+        type: Number,
         required: true,
       },
       badge: {
@@ -22,24 +22,20 @@ const newsSchema = Schema(
         required: true,
       },
     },
-    //   total_view: {
-    //     type: number,
-    //     required: true,
-    //   },
     title: {
       type: String,
       required: [true, "News Title is required"],
     },
     author: {
       name: {
-        type: string,
+        type: String,
         required: [true, "Author Name is Required"],
       },
       publishDate: {
         type: Date,
         default: Date.now,
       },
-      img: {
+      image: {
         type: String,
         required: true,
       },
@@ -52,6 +48,16 @@ const newsSchema = Schema(
       type: String,
       required: [true, "News Details is Required"],
     },
+    date: {
+      type: Date,
+      default: Date.now,
+    },
+    comments: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "newsComments",
+      },
+    ],
   },
 
   {

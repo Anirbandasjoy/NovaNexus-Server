@@ -1,11 +1,15 @@
 const express = require("express");
 const categoryRouter = require("./routes/caregory.routes");
 const app = express();
+const createError = require("http-errors");
 const cors = require("cors");
 const newsCommentRouter = require("./routes/newsComment.routes");
+const { errorResponse } = require("./helper/response");
+const newsRouter = require("./routes/news.routes");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
+app.use("/api/v1/news", newsRouter);
 app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/news-comments", newsCommentRouter);
 
@@ -18,7 +22,7 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  return errrorResponse(res, {
+  return errorResponse(res, {
     statusCode: err.status,
     message: err.message,
   });

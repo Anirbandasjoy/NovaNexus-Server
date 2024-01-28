@@ -1,15 +1,14 @@
-const slugify = require("slugify");
-const Category = require("../models/category.model");
 const { successResponse, errorResponse } = require("../helper/response");
+const {
+  getCategories,
+  createCategory,
+} = require("../services/category.service");
 
 // Category creating function
 const handleCreateCategory = async (req, res, next) => {
   try {
     const { name } = req.body;
-    const newCategory = await Category.create({
-      name: name,
-      slug: slugify(name),
-    });
+    const newCategory = await createCategory(name);
     successResponse(res, {
       statusCode: 201,
       message: "Category created Successfully",
@@ -25,18 +24,25 @@ const handleCreateCategory = async (req, res, next) => {
 };
 
 // get all category function
-
 const handleGetAllCategories = async (req, res, next) => {
   try {
-    jdfd;
+    const categories = await getCategories();
+    successResponse(res, {
+      statusCode: 200,
+      message: "fetch all categories",
+      payload: categories,
+    });
   } catch (error) {
     errorResponse(res, {
+      // Corrected typo here
       statusCode: 500,
       message: "Internal Server Error",
     });
+    next(error);
   }
 };
 
 module.exports = {
   handleCreateCategory,
+  handleGetAllCategories,
 };

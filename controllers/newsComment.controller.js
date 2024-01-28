@@ -1,20 +1,23 @@
 const { successResponse, errorResponse } = require("../helper/response");
-const newsComments = require("../models/news.comment.model");
+const NewsComments = require("../models/news.comment.model");
+const News = require("../models/news.model");
 
 const handleCreateComment = async (req, res, next) => {
   try {
     const { email, commentText } = req.body;
     const id = req.params.id;
-    const comment = new newsComments({
+    const comment = await NewsComments.create({
       email,
       commentText,
     });
 
     const news = await News.findById(id);
-    const saveComment = news.comments.push(comment);
+    news.comments.push(comment);
+    await news.save();
     successResponse(res, {
       statusCode: 201,
       message: "Create a new comment",
+      payload: comment,
     });
   } catch (error) {
     errorResponse(res, {
