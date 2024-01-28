@@ -24,6 +24,19 @@ const handleCreateCategory = async (req, res, next) => {
   }
 };
 
+// get all category function
+
+const handleGetAllCategories = async (req, res, next) => {
+  try {
+    jdfd;
+  } catch (error) {
+    errorResponse(res, {
+      statusCode: 500,
+      message: "Internal Server Error",
+    });
+  }
+};
+
 module.exports = {
   handleCreateCategory,
 };
