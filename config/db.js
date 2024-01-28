@@ -1,7 +1,16 @@
 const mongoose = require("mongoose");
-const { dbURL } = require("../secret");
+const { dbURL } = require("../secret/index");
 
-mongoose
-  .connect(dbURL)
-  .then(() => console.log("db is connected successsfully"))
-  .catch((err) => console.log(err));
+const dbConnection = async () => {
+  try {
+    await mongoose.connect(dbURL);
+    console.log("db is connected successfully");
+    mongoose.connection.on("error", () => {
+      console.error("db connection error ", error);
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+module.exports = dbConnection;

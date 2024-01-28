@@ -3,7 +3,6 @@ const categoryRouter = require("./routes/caregory.routes");
 const app = express();
 const cors = require("cors");
 const newsCommentRouter = require("./routes/newsComment.routes");
-require("./config/db");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
