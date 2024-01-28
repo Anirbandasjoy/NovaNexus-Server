@@ -1,12 +1,12 @@
 const { successResponse, errorResponse } = require("../helper/response");
-const NewsComments = require("../models/news.comment.model");
+const Comments = require("../models/news.comment.model");
 const News = require("../models/news.model");
 
 const handleCreateComment = async (req, res, next) => {
   try {
     const { email, commentText } = req.body;
     const id = req.params.id;
-    const comment = await NewsComments.create({
+    const comment = await Comments.create({
       email,
       commentText,
     });

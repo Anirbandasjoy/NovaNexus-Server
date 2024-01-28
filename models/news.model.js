@@ -55,7 +55,8 @@ const newsSchema = Schema(
     comments: [
       {
         type: Schema.Types.ObjectId,
-        ref: "newsComments",
+        ref: "Comments",
+        required: true,
       },
     ],
   },
