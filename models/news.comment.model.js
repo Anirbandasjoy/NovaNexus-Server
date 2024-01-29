@@ -10,10 +10,6 @@ const commentsSchema = Schema(
       type: String,
       required: [true, "Comment Text is Required"],
     },
-    date: {
-      type: Date,
-      default: Date.now,
-    },
   },
   {
     timestamps: true,

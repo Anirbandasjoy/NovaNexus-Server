@@ -4,14 +4,23 @@ const News = require("../models/news.model");
 
 const handleCreateNews = async (req, res, next) => {
   try {
-    const { title, number, badge, name, image, thumbnail_url, details } =
-      req.body;
+    const {
+      title,
+      number,
+      badge,
+      name,
+      image,
+      thumbnail_url,
+      details,
+      category,
+    } = req.body;
     const newNews = await News.create({
       title,
       rating: { number, badge },
       author: { name, image },
       thumbnail_url,
       details,
+      category,
     });
 
     successResponse(res, {
@@ -20,17 +29,13 @@ const handleCreateNews = async (req, res, next) => {
       payload: newNews,
     });
   } catch (error) {
-    errorResponse(res, {
-      statusCode: 500,
-      message: "Internal Server Error",
-    });
     next(error);
   }
 };
 
 const handleGetAllNews = async (req, res, next) => {
   try {
-    const news = await News.find();
+    const news = await News.find().populate("category");
     if (!news || news.length === 0) {
       return createError(404, "News not found");
     }
@@ -42,7 +47,7 @@ const handleGetAllNews = async (req, res, next) => {
   } catch (error) {
     errorResponse(res, {
       statusCode: 500,
-      message: "Internal Server Error",
+      message: error.message || "Internal server error",
     });
     next(error);
   }

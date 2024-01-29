@@ -48,10 +48,6 @@ const newsSchema = Schema(
       type: String,
       required: [true, "News Details is Required"],
     },
-    date: {
-      type: Date,
-      default: Date.now,
-    },
     comments: [
       {
         type: Schema.Types.ObjectId,
@@ -59,6 +55,11 @@ const newsSchema = Schema(
         required: true,
       },
     ],
+    category: {
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+      required: [true, "Category is required"],
+    },
   },
 
   {
