@@ -12,16 +12,20 @@ const newsSchema = Schema(
         default: false,
       },
     },
-    rating: {
-      number: {
-        type: Number,
-        required: true,
-      },
-      badge: {
-        type: String,
-        required: true,
-      },
+    like: {
+      type: Number,
+      default: 0,
     },
+    // rating: {
+    //   number: {
+    //     type: Number,
+    //     required: true,
+    //   },
+    //   badge: {
+    //     type: String,
+    //     required: true,
+    //   },
+    // },
     title: {
       type: String,
       required: [true, "News Title is required"],

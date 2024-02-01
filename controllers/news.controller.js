@@ -16,7 +16,7 @@ const handleCreateNews = async (req, res, next) => {
     } = req.body;
     const newNews = await News.create({
       title,
-      rating: { number, badge },
+      // rating: { number, badge },
       author: { name, image },
       thumbnail_url,
       details,
