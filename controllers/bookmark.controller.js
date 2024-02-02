@@ -50,4 +50,31 @@ const handleGetAllBookmarkNews = async (req, res, next) => {
   }
 };
 
-module.exports = { handleCreateBookmark, handleGetAllBookmarkNews };
+const handleDeleteBookmark = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const deletedBookmark = await Bookmark.findByIdAndDelete(id);
+    if (!deletedBookmark) {
+      return createError(404, "News Not Found");
+    }
+    successResponse(res, {
+      statusCode: 200,
+      message: "Bookmark deleted successfully",
+      payload: deletedBookmark,
+    });
+
+    console.log({ id });
+  } catch (error) {
+    errorResponse(res, {
+      statusCode: 500,
+      message: error.message,
+    });
+    next(error);
+  }
+};
+
+module.exports = {
+  handleCreateBookmark,
+  handleGetAllBookmarkNews,
+  handleDeleteBookmark,
+};
