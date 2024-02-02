@@ -10,6 +10,9 @@ const commentsSchema = Schema(
       type: String,
       required: [true, "News Comment author image is required"],
     },
+    commentImage: {
+      type: String,
+    },
     commentText: {
       type: String,
       required: [true, "Comment Text is Required"],
