@@ -30,4 +30,41 @@ const handleCreateComment = async (req, res, next) => {
   }
 };
 
-module.exports = { handleCreateComment };
+const handleDeleteComment = async (req, res, next) => {
+  try {
+    const commentId = req.params.id;
+    const newsId = req.query.newsId;
+    console.log({ commentId });
+    console.log({ newsId });
+
+    const news = await News.findById(newsId);
+    const commentIndex = news.comments.findIndex(
+      (comment) => comment._id.toString() === commentId
+    );
+    console.log(commentIndex);
+
+    if (commentIndex === -1) {
+      return errorResponse(res, {
+        statusCode: 404,
+        message: "Comment not found",
+      });
+    } else {
+      const deletedComment = news.comments.splice(commentIndex, 1)[0];
+      await news.save();
+      return successResponse(res, {
+        statusCode: 200,
+        message: "Comment deleted successfully",
+        payload: deletedComment,
+      });
+    }
+  } catch (error) {
+    console.log(error.message);
+    errorResponse(res, {
+      statusCode: 500,
+      message: "Internal Server Error",
+    });
+    next(error);
+  }
+};
+
+module.exports = { handleCreateComment, handleDeleteComment };
