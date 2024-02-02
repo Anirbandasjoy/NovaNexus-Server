@@ -34,9 +34,6 @@ const handleDeleteComment = async (req, res, next) => {
   try {
     const commentId = req.params.id;
     const newsId = req.query.newsId;
-    console.log({ commentId });
-    console.log({ newsId });
-
     const news = await News.findById(newsId);
     const commentIndex = news.comments.findIndex(
       (comment) => comment._id.toString() === commentId

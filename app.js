@@ -6,12 +6,14 @@ const cors = require("cors");
 const newsCommentRouter = require("./routes/newsComment.routes");
 const { errorResponse } = require("./helper/response");
 const newsRouter = require("./routes/news.routes");
+const bookmarkRouter = require("./routes/bookmark.routes");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 app.use("/api/v1/news", newsRouter);
 app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/news-comments", newsCommentRouter);
+app.use("/api/v1/news-bookmark", bookmarkRouter);
 
 app.get("/", (req, res) => {
   res.send("NovaNexus Server is running ...");
