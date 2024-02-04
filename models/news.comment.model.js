@@ -8,7 +8,7 @@ const commentsSchema = Schema(
     },
     profileImage: {
       type: String,
-      required: [true, "News Comment author image is required"],
+      default: null,
     },
     commentImage: {
       type: String,
