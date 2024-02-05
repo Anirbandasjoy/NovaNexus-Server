@@ -35,7 +35,7 @@ const handleCreateNews = async (req, res, next) => {
 
 const handleGetAllNews = async (req, res, next) => {
   try {
-    const news = await News.find().populate("category");
+    const news = await News.find();
     if (!news || news.length === 0) {
       return createError(404, "News not found");
     }
@@ -76,4 +76,39 @@ const handleGetSingleNews = async (req, res, next) => {
   }
 };
 
-module.exports = { handleCreateNews, handleGetAllNews, handleGetSingleNews };
+// get News using Category
+
+const handleGetCategoryNews = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    
+
+    if (!id) {
+      return createError(404, "Category Not Found");
+    }
+
+    const news = await News.find({ category: id });
+
+    if (!news || news.length === 0) {
+      return createError(404, "No News Found for the Category");
+    }
+
+    successResponse(res, {
+      message: "Fetched news for the category",
+      payload: news,
+    });
+  } catch (error) {
+    errorResponse(res, {
+      statusCode: 500,
+      message: error.message,
+    });
+    next();
+  }
+};
+
+module.exports = {
+  handleCreateNews,
+  handleGetAllNews,
+  handleGetSingleNews,
+  handleGetCategoryNews,
+};
