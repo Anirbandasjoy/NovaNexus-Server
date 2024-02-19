@@ -62,8 +62,6 @@ const handleDeleteBookmark = async (req, res, next) => {
       message: "Bookmark deleted successfully",
       payload: deletedBookmark,
     });
-
-    console.log({ id });
   } catch (error) {
     errorResponse(res, {
       statusCode: 500,

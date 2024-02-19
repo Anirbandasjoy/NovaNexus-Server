@@ -81,8 +81,6 @@ const handleGetSingleNews = async (req, res, next) => {
 const handleGetCategoryNews = async (req, res, next) => {
   try {
     const id = req.params.id;
-    
-
     if (!id) {
       return createError(404, "Category Not Found");
     }
