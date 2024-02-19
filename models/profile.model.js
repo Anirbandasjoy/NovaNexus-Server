@@ -8,8 +8,10 @@ const profileSchema = Schema(
     },
     email: {
       type: String,
+      unique: true,
       required: [true, "User email is required"],
     },
+
     profileImage: {
       type: String,
       default: null,
