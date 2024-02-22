@@ -1,23 +1,13 @@
 const createError = require("http-errors");
 const { errorResponse, successResponse } = require("../helper/response");
 const News = require("../models/news.model");
-
+// const Profile = require("../models/profile.model");
 const handleCreateNews = async (req, res, next) => {
   try {
-    const {
-      title,
-      number,
-      badge,
-      name,
-      image,
-      thumbnail_url,
-      details,
-      category,
-    } = req.body;
+    const { title, profileId, thumbnail_url, details, category } = req.body;
     const newNews = await News.create({
       title,
-      // rating: { number, badge },
-      author: { name, image },
+      profileId,
       thumbnail_url,
       details,
       category,
@@ -56,7 +46,13 @@ const handleGetAllNews = async (req, res, next) => {
 const handleGetSingleNews = async (req, res, next) => {
   try {
     const id = req.params.id;
-    const news = await News.findById(id).populate("comments");
+    const news = await News.findById(id).populate({
+      path: "comments",
+      populate: {
+        path: "profileId",
+        model: "Profile",
+      },
+    });
 
     if (!news) {
       return createError(404, "News not found");
@@ -70,7 +66,7 @@ const handleGetSingleNews = async (req, res, next) => {
   } catch (error) {
     errorResponse(res, {
       statusCode: 500,
-      message: "Internal Server Error",
+      message: error.message,
     });
     next(error);
   }

@@ -4,11 +4,10 @@ const News = require("../models/news.model");
 
 const handleCreateComment = async (req, res, next) => {
   try {
-    const { name, commentText, profileImage, commentImage } = req.body;
+    const { commentText, commentImage, profileId } = req.body;
     const id = req.params.id;
     const comment = await Comments.create({
-      name,
-      profileImage,
+      profileId,
       commentImage,
       commentText,
     });

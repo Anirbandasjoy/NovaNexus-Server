@@ -16,34 +16,28 @@ const newsSchema = Schema(
       type: Number,
       default: 0,
     },
-    // rating: {
-    //   number: {
-    //     type: Number,
-    //     required: true,
-    //   },
-    //   badge: {
-    //     type: String,
-    //     required: true,
-    //   },
-    // },
     title: {
       type: String,
       required: [true, "News Title is required"],
     },
-    author: {
-      name: {
-        type: String,
-        required: [true, "Author Name is Required"],
-      },
-      publishDate: {
-        type: Date,
-        default: Date.now,
-      },
-      image: {
-        type: String,
-        required: true,
-      },
+    status: {
+      type: String,
+      default: "pending",
     },
+    // author: {
+    //   name: {
+    //     type: String,
+    //     required: [true, "Author Name is Required"],
+    //   },
+    //   publishDate: {
+    //     type: Date,
+    //     default: Date.now,
+    //   },
+    //   image: {
+    //     type: String,
+    //     required: true,
+    //   },
+    // },
     thumbnail_url: {
       type: String,
       required: [true, "News Thubnail is required"],
@@ -63,6 +57,11 @@ const newsSchema = Schema(
       type: Schema.Types.ObjectId,
       ref: "Category",
       required: [true, "Category is required"],
+    },
+    profileId: {
+      type: Schema.Types.ObjectId,
+      ref: "Profile",
+      required: [true, "Profile Id is required"],
     },
   },
 

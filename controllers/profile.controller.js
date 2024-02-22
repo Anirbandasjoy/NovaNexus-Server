@@ -56,6 +56,7 @@ const updateProfileInformation = async (req, res, next) => {
       statusCode: 500,
       message: "Internal Server Error",
     });
+    next();
   }
 };
 const getUserProfileSingleInformation = async (req, res, next) => {
@@ -75,6 +76,7 @@ const getUserProfileSingleInformation = async (req, res, next) => {
       statusCode: 500,
       message: error.message,
     });
+    next();
   }
 };
 

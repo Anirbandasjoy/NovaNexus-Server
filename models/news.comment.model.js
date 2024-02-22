@@ -2,20 +2,17 @@ const { Schema, model } = require("mongoose");
 
 const commentsSchema = Schema(
   {
-    name: {
-      type: String,
-      required: [true, "News Comment author is required"],
-    },
-    profileImage: {
-      type: String,
-      default: null,
-    },
     commentImage: {
       type: String,
     },
     commentText: {
       type: String,
       required: [true, "Comment Text is Required"],
+    },
+    profileId: {
+      type: Schema.Types.ObjectId,
+      ref: "Profile",
+      required: [true, "ProfileId is required "],
     },
   },
   {
