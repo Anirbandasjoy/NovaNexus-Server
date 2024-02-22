@@ -25,7 +25,15 @@ const handleCreateNews = async (req, res, next) => {
 
 const handleGetAllNews = async (req, res, next) => {
   try {
-    const news = await News.find().populate("profileId");
+    const news = await News.find()
+      .populate("profileId")
+      .populate({
+        path: "comments",
+        populate: {
+          path: "profileId",
+          model: "Profile",
+        },
+      });
     if (!news || news.length === 0) {
       return createError(404, "News not found");
     }
