@@ -59,6 +59,7 @@ const updateProfileInformation = async (req, res, next) => {
     next();
   }
 };
+// get single user
 const getUserProfileSingleInformation = async (req, res, next) => {
   try {
     const email = req.params.email;
@@ -80,30 +81,8 @@ const getUserProfileSingleInformation = async (req, res, next) => {
   }
 };
 
-const getUserProfileInformationUsingUserId = async (req, res, next) => {
-  try {
-    const id = req.params.id;
-    const userProfile = await Profile.findOne({ _id: id });
-    if (!userProfile) {
-      return res.status(404).json({ message: "User Profile Not Found" });
-    }
-    successResponse(res, {
-      statusCode: 200,
-      message: "Single User Profile Get Successfully",
-      payload: userProfile,
-    });
-  } catch (error) {
-    errorResponse(res, {
-      statusCode: 500,
-      message: error.message,
-    });
-    next();
-  }
-};
-
 module.exports = {
   createProfileInformation,
   updateProfileInformation,
   getUserProfileSingleInformation,
-  getUserProfileInformationUsingUserId,
 };
