@@ -29,6 +29,7 @@ const createProfileInformation = async (req, res, next) => {
     next();
   }
 };
+// update Profile Information
 const updateProfileInformation = async (req, res, next) => {
   try {
     const { fullName, profileImage, backgroundImage } = req.body;
