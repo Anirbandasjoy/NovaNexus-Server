@@ -16,6 +16,10 @@ const profileSchema = Schema(
       type: String,
       default: null,
     },
+    backgroundImage: {
+      type: String,
+      default: null,
+    },
     role: {
       type: String,
       required: [true, "User role is required"],
