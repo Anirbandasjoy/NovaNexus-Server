@@ -31,7 +31,7 @@ const createProfileInformation = async (req, res, next) => {
 };
 const updateProfileInformation = async (req, res, next) => {
   try {
-    const { fullName, profileImage } = req.body;
+    const { fullName, profileImage, backgroundImage } = req.body;
     const email = req.params.email;
 
     const userProfile = await Profile.findOne({ email });
@@ -42,7 +42,7 @@ const updateProfileInformation = async (req, res, next) => {
 
     const updatedProfile = await Profile.findOneAndUpdate(
       { email },
-      { fullName, profileImage },
+      { fullName, profileImage, backgroundImage },
       { new: true }
     );
 
