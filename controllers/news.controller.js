@@ -110,9 +110,37 @@ const handleGetCategoryNews = async (req, res, next) => {
   }
 };
 
+// deleteNews
+
+const handleDeleteNews = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const news = await News.findByIdAndDelete(id);
+    console.log({ id });
+
+    if (news) {
+      return successResponse(res, {
+        statusCode: 200,
+        message: "News Deleted Successfully",
+        payload: news,
+      });
+    } else {
+      return res.status(403).send({ message: "News Not Deleted" });
+    }
+  } catch (error) {
+    errorResponse(res, {
+      statusCode: 500,
+      message: error.message,
+    });
+
+    next(error);
+  }
+};
+
 module.exports = {
   handleCreateNews,
   handleGetAllNews,
   handleGetSingleNews,
   handleGetCategoryNews,
+  handleDeleteNews,
 };
