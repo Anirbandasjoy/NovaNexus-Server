@@ -2,23 +2,26 @@ const createError = require("http-errors");
 const { errorResponse, successResponse } = require("../helper/response");
 const Bookmark = require("../models/bookmark.model");
 
+// create bookmark api
 const handleCreateBookmark = async (req, res, next) => {
   try {
-    const { newsId } = req.body;
-    const existingBookmark = await Bookmark.findOne({ newsId });
+    const { newsId, profileId } = req.body;
+    const existingBookmark = await Bookmark.findOne({ newsId, profileId });
+
     if (existingBookmark) {
       return errorResponse(res, {
         statusCode: 403,
-        message: "News already exists",
+        message: "Bookmark already exists for this News and Profile",
       });
     }
     const newBookmark = await Bookmark.create({
       newsId,
+      profileId,
     });
 
     successResponse(res, {
       statusCode: 201,
-      message: "Create a new bookmark",
+      message: "Created a new bookmark",
       payload: newBookmark,
     });
   } catch (error) {
@@ -32,7 +35,9 @@ const handleCreateBookmark = async (req, res, next) => {
 
 const handleGetAllBookmarkNews = async (req, res, next) => {
   try {
-    const bookmarkNews = await Bookmark.find().populate("newsId");
+    const bookmarkNews = await Bookmark.find()
+      .populate("newsId")
+      .populate("profileId");
     if (!bookmarkNews || bookmarkNews.length === 0) {
       return createError(404, "Not Found BookmarkNews");
     }
