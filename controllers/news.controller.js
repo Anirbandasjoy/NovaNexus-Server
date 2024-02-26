@@ -116,7 +116,6 @@ const handleDeleteNews = async (req, res, next) => {
   try {
     const id = req.params.id;
     const news = await News.findByIdAndDelete(id);
-    console.log({ id });
 
     if (news) {
       return successResponse(res, {
@@ -136,6 +135,43 @@ const handleDeleteNews = async (req, res, next) => {
     next(error);
   }
 };
+// update news
+
+const handleUpdateNews = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const { title, details } = req.body;
+
+    const news = await News.findById(id);
+
+    if (!news) {
+      return res.status(404).send({ message: "News not Found With This ID " });
+    }
+    const updatedNews = await News.findOneAndUpdate(
+      {
+        _id: id,
+      },
+      {
+        title,
+        details,
+      },
+      {
+        new: true,
+      }
+    );
+    successResponse(res, {
+      statusCode: 200,
+      message: "News Updated Successfully",
+      payload: updatedNews,
+    });
+  } catch (error) {
+    errorResponse(res, {
+      statusCode: 500,
+      message: error.message,
+    });
+    next(error);
+  }
+};
 
 module.exports = {
   handleCreateNews,
@@ -143,4 +179,5 @@ module.exports = {
   handleGetSingleNews,
   handleGetCategoryNews,
   handleDeleteNews,
+  handleUpdateNews,
 };

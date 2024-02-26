@@ -4,7 +4,7 @@ const Profile = require("../models/profile.model");
 const createProfileInformation = async (req, res, next) => {
   try {
     const { fullName, email, profileImage, role } = req.body;
-    console.log(req.body);
+  
     const existUserProfile = await Profile.findOne({ email });
     if (existUserProfile) {
       return res.status(200).json(existUserProfile);

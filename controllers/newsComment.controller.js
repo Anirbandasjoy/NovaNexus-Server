@@ -37,7 +37,7 @@ const handleDeleteComment = async (req, res, next) => {
     const commentIndex = news.comments.findIndex(
       (comment) => comment._id.toString() === commentId
     );
-    console.log(commentIndex);
+  
 
     if (commentIndex === -1) {
       return errorResponse(res, {
