@@ -173,6 +173,41 @@ const handleUpdateNews = async (req, res, next) => {
   }
 };
 
+const handleUpdateNewsStatus = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const { status } = req.body;
+    const news = await News.findById(id);
+
+    if (!news) {
+      return res.status(404).send({ message: "News not Found With This ID " });
+    }
+    const updatedNews = await News.findOneAndUpdate(
+      {
+        _id: id,
+      },
+      {
+        status,
+      },
+      {
+        new: true,
+      }
+    );
+    successResponse(res, {
+      statusCode: 200,
+      message: "News Status Updated Successfully",
+      payload: updatedNews,
+    });
+
+  } catch (error) {
+    errorResponse(res, {
+      statusCode: 500,
+      message: error.message,
+    });
+    next(error);
+  }
+};
+
 module.exports = {
   handleCreateNews,
   handleGetAllNews,
@@ -180,4 +215,5 @@ module.exports = {
   handleGetCategoryNews,
   handleDeleteNews,
   handleUpdateNews,
+  handleUpdateNewsStatus,
 };
