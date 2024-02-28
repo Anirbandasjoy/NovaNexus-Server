@@ -11,10 +11,13 @@ const profileSchema = Schema(
       unique: true,
       required: [true, "User email is required"],
     },
-
     profileImage: {
       type: String,
       default: null,
+    },
+    isVerified: {
+      type: String,
+      default: "normal",
     },
     backgroundImage: {
       type: String,
