@@ -103,9 +103,41 @@ const getAllUserPrfoile = async (req, res, next) => {
   }
 };
 
+const createVerifyUserProfile = async (req, res, next) => {
+  try {
+    const { isVerified } = req.body;
+    const email = req.params.email;
+
+    const userProfile = await Profile.findOne({ email });
+
+    if (!userProfile) {
+      return res.status(404).json({ message: "User profile not found" });
+    }
+
+    const updatedProfile = await Profile.findOneAndUpdate(
+      { email },
+      { isVerified },
+      { new: true }
+    );
+
+    successResponse(res, {
+      statusCode: 200,
+      message: "User profile Verification updated successfully",
+      payload: updatedProfile,
+    });
+  } catch (error) {
+    errorResponse(res, {
+      statusCode: 500,
+      message: "Internal Server Error",
+    });
+    next();
+  }
+};
+
 module.exports = {
   createProfileInformation,
   updateProfileInformation,
   getUserProfileSingleInformation,
   getAllUserPrfoile,
+  createVerifyUserProfile,
 };
