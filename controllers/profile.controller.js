@@ -1,10 +1,10 @@
 const { errorResponse, successResponse } = require("../helper/response");
 const Profile = require("../models/profile.model");
-
+// create user Profile
 const createProfileInformation = async (req, res, next) => {
   try {
     const { fullName, email, profileImage, role } = req.body;
-  
+
     const existUserProfile = await Profile.findOne({ email });
     if (existUserProfile) {
       return res.status(200).json(existUserProfile);
@@ -81,9 +81,31 @@ const getUserProfileSingleInformation = async (req, res, next) => {
     next();
   }
 };
+// get all user profile
+
+const getAllUserPrfoile = async (req, res, next) => {
+  try {
+    const userProfiles = await Profile.find();
+    if (!userProfiles || userProfiles.length === 0) {
+      return res.status(404).json({ message: "User Profile Not Found" });
+    }
+    successResponse(res, {
+      statusCode: 200,
+      message: "All User Profile Get Successfully",
+      payload: userProfiles,
+    });
+  } catch (error) {
+    errorResponse(res, {
+      statusCode: 500,
+      message: error.message,
+    });
+    next();
+  }
+};
 
 module.exports = {
   createProfileInformation,
   updateProfileInformation,
   getUserProfileSingleInformation,
+  getAllUserPrfoile,
 };
