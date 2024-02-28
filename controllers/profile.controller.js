@@ -102,7 +102,7 @@ const getAllUserPrfoile = async (req, res, next) => {
     next();
   }
 };
-
+// create verify user api
 const createVerifyUserProfile = async (req, res, next) => {
   try {
     const { isVerified } = req.body;
