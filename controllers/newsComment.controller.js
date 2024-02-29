@@ -37,7 +37,6 @@ const handleDeleteComment = async (req, res, next) => {
     const commentIndex = news.comments.findIndex(
       (comment) => comment._id.toString() === commentId
     );
-  
 
     if (commentIndex === -1) {
       return errorResponse(res, {
@@ -63,4 +62,30 @@ const handleDeleteComment = async (req, res, next) => {
   }
 };
 
-module.exports = { handleCreateComment, handleDeleteComment };
+const handleNewsAssociatedCommentDeleted = async (req, res, next) => {
+  try {
+    const commentId = req.params.commentId;
+    const deletedComment = await Comments.findByIdAndDelete(commentId);
+    if (!deletedComment) {
+      return res.status(404).send({ message: "Comment not found" });
+    }
+
+    return successResponse(res, {
+      statusCode: 200,
+      message: "Comment deleted successfully",
+      payload: deletedComment,
+    });
+  } catch (error) {
+    errorResponse(res, {
+      statusCode: 500,
+      message: error.message,
+    });
+    next(error);
+  }
+};
+
+module.exports = {
+  handleCreateComment,
+  handleDeleteComment,
+  handleNewsAssociatedCommentDeleted,
+};

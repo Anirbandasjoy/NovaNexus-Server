@@ -1,6 +1,7 @@
 const createError = require("http-errors");
 const { errorResponse, successResponse } = require("../helper/response");
 const News = require("../models/news.model");
+const Comments = require("../models/news.comment.model");
 // const Profile = require("../models/profile.model");
 const handleCreateNews = async (req, res, next) => {
   try {
@@ -135,6 +136,7 @@ const handleDeleteNews = async (req, res, next) => {
     next(error);
   }
 };
+
 // update news
 
 const handleUpdateNews = async (req, res, next) => {
@@ -198,7 +200,6 @@ const handleUpdateNewsStatus = async (req, res, next) => {
       message: "News Status Updated Successfully",
       payload: updatedNews,
     });
-
   } catch (error) {
     errorResponse(res, {
       statusCode: 500,
