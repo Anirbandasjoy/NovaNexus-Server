@@ -4,6 +4,7 @@ const {
   getUserProfileSingleInformation,
   getAllUserPrfoile,
   createVerifyUserProfile,
+  deleteUserProfile,
 } = require("../controllers/profile.controller");
 
 const profileRouter = require("express").Router();
@@ -16,5 +17,6 @@ profileRouter.get(
   getUserProfileSingleInformation
 );
 profileRouter.get("/", getAllUserPrfoile);
+profileRouter.delete("/:id", deleteUserProfile);
 
 module.exports = profileRouter;

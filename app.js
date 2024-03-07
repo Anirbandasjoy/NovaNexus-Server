@@ -8,6 +8,7 @@ const { errorResponse } = require("./helper/response");
 const newsRouter = require("./routes/news.routes");
 const bookmarkRouter = require("./routes/bookmark.routes");
 const profileRouter = require("./routes/profile.routes");
+const reactRouter = require("./routes/react.routes");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
@@ -16,6 +17,7 @@ app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/news-comments", newsCommentRouter);
 app.use("/api/v1/news-bookmark", bookmarkRouter);
 app.use("/api/v1/profile", profileRouter);
+app.use("/api/v1/react", reactRouter);
 
 app.get("/", (req, res) => {
   res.send("NovaNexus Server is running ...");

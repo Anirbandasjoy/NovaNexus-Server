@@ -1,4 +1,6 @@
 const { errorResponse, successResponse } = require("../helper/response");
+const Comments = require("../models/news.comment.model");
+const News = require("../models/news.model");
 const Profile = require("../models/profile.model");
 // create user Profile
 const createProfileInformation = async (req, res, next) => {
@@ -134,10 +136,80 @@ const createVerifyUserProfile = async (req, res, next) => {
   }
 };
 
+const deleteUserProfile = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+
+    // Find and delete user comments on their own posts
+    const userNewsList = await News.find({ profileId: id });
+    let deletedUserComments = [];
+    if (userNewsList && userNewsList.length > 0) {
+      for (const news of userNewsList) {
+        const deleteCommentsResult = await Comments.deleteMany({
+          _id: { $in: news.comments },
+        });
+        deletedUserComments.push({
+          newsId: news._id,
+          deletedCount: deleteCommentsResult.deletedCount,
+        });
+      }
+    }
+
+    // Find and delete user comments on other posts
+    const otherPostCommentDelete = await Comments.deleteMany({
+      profileId: id,
+    });
+
+    // Find news posts associated with the user and clear their comments
+    const newsList = await News.find({ profileId: { $ne: id } });
+    for (const news of newsList) {
+      news.comments = news.comments.filter(
+        (commentId) => !news.comments.includes(commentId)
+      );
+      await news.save(); // Save each news after filtering comments
+    }
+
+    // Delete user news
+    const userNews = await News.deleteMany({ profileId: id });
+
+    // Delete user profile
+    const deleteUserProfile = await Profile.findByIdAndDelete(id);
+
+    // Check if user profile exists
+    if (!deleteUserProfile) {
+      return errorResponse(res, {
+        statusCode: 404,
+        message: "User Not Found",
+      });
+    }
+
+    // Send success response
+    successResponse(res, {
+      statusCode: 200,
+      message: "User Deleted Successfully",
+      payload: {
+        deletedUser: deleteUserProfile,
+        deleteUserNews: userNews,
+        deleteUserComments: deletedUserComments,
+        deleteOtherPostComments: otherPostCommentDelete,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    // Handle errors
+    errorResponse(res, {
+      statusCode: 500,
+      message: error.message,
+    });
+    next(error);
+  }
+};
+
 module.exports = {
   createProfileInformation,
   updateProfileInformation,
   getUserProfileSingleInformation,
   getAllUserPrfoile,
   createVerifyUserProfile,
+  deleteUserProfile,
 };
