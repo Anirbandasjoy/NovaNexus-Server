@@ -46,16 +46,17 @@ const handlegetReact = async (req, res, next) => {
 
 const handleGetNewsReact = async (req, res, next) => {
   try {
-    const { newsId, profileId } = req.body;
-    const allReact = await React.find({ newsId, profileId });
+    const newsId = req.params.newsId;
+    const allReact = await React.find({ newsId });
     if (!allReact || allReact.length === 0) {
-      return res
-        .status(404)
-        .send({ message: "Not Found News React", code: 404 });
+      return successResponse(res, {
+        statusCode: 200,
+        payload: allReact,
+      });
     }
     successResponse(res, {
       statusCode: 200,
-      message: "fetch all news react",
+      message: "fetch all news with this id ",
       payload: allReact,
     });
   } catch (error) {
