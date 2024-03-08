@@ -47,7 +47,7 @@ const handlegetReact = async (req, res, next) => {
 const handleGetNewsReact = async (req, res, next) => {
   try {
     const newsId = req.params.newsId;
-    const allReact = await React.find({ newsId });
+    const allReact = await React.find({ newsId }).populate("profileId");
     if (!allReact || allReact.length === 0) {
       return successResponse(res, {
         statusCode: 200,
