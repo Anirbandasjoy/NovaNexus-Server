@@ -87,14 +87,30 @@ const getUserProfileSingleInformation = async (req, res, next) => {
 
 const getAllUserPrfoile = async (req, res, next) => {
   try {
-    const userProfiles = await Profile.find();
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 4;
+
+    const userProfiles = await Profile.find()
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    const count = await Profile.countDocuments();
+    const totalPage = Math.ceil(count / limit);
+    const currentPage = page;
     if (!userProfiles || userProfiles.length === 0) {
       return res.status(404).json({ message: "User Profile Not Found" });
     }
     successResponse(res, {
       statusCode: 200,
       message: "All User Profile Get Successfully",
-      payload: userProfiles,
+      payload: {
+        userProfiles,
+        totalPage,
+        totalNumberOfUsers: count,
+        currentPage,
+        nextPage: currentPage + 1,
+        prvPage: currentPage - 1,
+      },
     });
   } catch (error) {
     errorResponse(res, {
@@ -135,7 +151,7 @@ const createVerifyUserProfile = async (req, res, next) => {
     next();
   }
 };
-
+// create post
 const deleteUserProfile = async (req, res, next) => {
   try {
     const id = req.params.id;
