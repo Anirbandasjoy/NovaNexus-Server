@@ -84,8 +84,26 @@ const handleNewsAssociatedCommentDeleted = async (req, res, next) => {
   }
 };
 
+const handleGetAllComments = async (req, res, next) => {
+  try {
+    const comments = await Comments.find();
+    successResponse(res, {
+      statusCode: 200,
+      message: "Fetch all comments",
+      payload: comments,
+    });
+  } catch (error) {
+    errorResponse(res, {
+      statusCode: 500,
+      message: error.message,
+    });
+    next(error);
+  }
+};
+
 module.exports = {
   handleCreateComment,
   handleDeleteComment,
   handleNewsAssociatedCommentDeleted,
+  handleGetAllComments,
 };
