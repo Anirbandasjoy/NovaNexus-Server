@@ -110,9 +110,9 @@ const getAllUserPrfoile = async (req, res, next) => {
     const count = await Profile.countDocuments();
     // const totalPage = Math.ceil(count / limit);
     // const currentPage = page;
-    if (!userProfiles || userProfiles.length === 0) {
-      return res.status(404).json({ message: "User Profile Not Found" });
-    }
+    // if (!userProfiles || userProfiles.length === 0) {
+    //   return res.status(404).json({ message: "User Profile Not Found" });
+    // }
     successResponse(res, {
       statusCode: 200,
       message: "All User Profile Get Successfully",
