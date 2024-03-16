@@ -87,16 +87,29 @@ const getUserProfileSingleInformation = async (req, res, next) => {
 
 const getAllUserPrfoile = async (req, res, next) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 4;
+    // const page = parseInt(req.query.page) || 1;
+    // const limit = parseInt(req.query.limit) || 4;
+    const search = req.query.search || "";
 
-    const userProfiles = await Profile.find()
-      .skip((page - 1) * limit)
-      .limit(limit);
+    const searchRegExp = new RegExp(".*" + search + ".*", "i");
+    const filter = {
+      $or: [
+        {
+          fullName: { $regex: searchRegExp },
+        },
+        {
+          email: { $regex: searchRegExp },
+        },
+      ],
+    };
+
+    const userProfiles = await Profile.find(filter);
+    // .skip((page - 1) * limit)
+    // .limit(limit);
 
     const count = await Profile.countDocuments();
-    const totalPage = Math.ceil(count / limit);
-    const currentPage = page;
+    // const totalPage = Math.ceil(count / limit);
+    // const currentPage = page;
     if (!userProfiles || userProfiles.length === 0) {
       return res.status(404).json({ message: "User Profile Not Found" });
     }
@@ -105,11 +118,11 @@ const getAllUserPrfoile = async (req, res, next) => {
       message: "All User Profile Get Successfully",
       payload: {
         userProfiles,
-        totalPage,
+        // totalPage,
         totalNumberOfUsers: count,
-        currentPage,
-        nextPage: currentPage + 1,
-        prvPage: currentPage - 1,
+        // currentPage,
+        // nextPage: currentPage + 1,
+        // prvPage: currentPage - 1,
       },
     });
   } catch (error) {
