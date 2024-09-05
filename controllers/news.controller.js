@@ -85,6 +85,7 @@ const handleGetAllNews = async (req, res, next) => {
     next(error);
   }
 };
+
 const handleGetSingleNews = async (req, res, next) => {
   try {
     const id = req.params.id;
