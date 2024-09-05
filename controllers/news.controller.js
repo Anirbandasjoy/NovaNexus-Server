@@ -26,8 +26,20 @@ const handleCreateNews = async (req, res, next) => {
 };
 
 const handleGetAllNews = async (req, res, next) => {
+  const search = req.query.search || "";
+  const searchRegExp = new RegExp(".*" + search + ".*", "i");
+  const filter = {
+    $or: [
+      {
+        title: { $regex: searchRegExp },
+      },
+      {
+        details: { $regex: searchRegExp },
+      },
+    ],
+  };
   try {
-    const news = await News.find()
+    const news = await News.find(filter)
       .populate("profileId")
       .populate({
         path: "comments",
