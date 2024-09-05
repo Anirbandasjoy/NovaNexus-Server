@@ -11,7 +11,11 @@ const profileRouter = require("./routes/profile.routes");
 const reactRouter = require("./routes/react.routes");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 app.use("/api/v1/news", newsRouter);
 app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/news-comments", newsCommentRouter);

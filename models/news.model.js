@@ -24,20 +24,7 @@ const newsSchema = Schema(
       type: String,
       default: "pending",
     },
-    // author: {
-    //   name: {
-    //     type: String,
-    //     required: [true, "Author Name is Required"],
-    //   },
-    //   publishDate: {
-    //     type: Date,
-    //     default: Date.now,
-    //   },
-    //   image: {
-    //     type: String,
-    //     required: true,
-    //   },
-    // },
+
     thumbnail_url: {
       type: String,
       required: [true, "News Thubnail is required"],

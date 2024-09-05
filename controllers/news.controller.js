@@ -1,7 +1,8 @@
 const createError = require("http-errors");
 const { errorResponse, successResponse } = require("../helper/response");
 const News = require("../models/news.model");
-const Comments = require("../models/news.comment.model");
+const React = require("../models/react.model");
+const { calculateNoticeScore } = require("../services/news");
 // const Profile = require("../models/profile.model");
 const handleCreateNews = async (req, res, next) => {
   try {
@@ -35,13 +36,34 @@ const handleGetAllNews = async (req, res, next) => {
           model: "Profile",
         },
       });
+
     if (!news || news.length === 0) {
       return createError(404, "News not found");
     }
+
+    const newsWithScores = await Promise.all(
+      news.map(async (item) => {
+        const commentsCount = item.comments.length;
+
+        const reactsCount = await React.countDocuments({ newsId: item._id });
+
+        const score = calculateNoticeScore(item, commentsCount, reactsCount);
+
+        return {
+          ...item.toObject(),
+          score,
+          commentsCount,
+          reactsCount,
+        };
+      })
+    );
+
+    const sortedNews = newsWithScores.sort((a, b) => b.score - a.score);
+    const shuffledNews = sortedNews.sort(() => Math.random() - 0.5);
     successResponse(res, {
       statusCode: 200,
-      message: "fetched all news",
-      payload: news,
+      message: "Fetched all news",
+      payload: shuffledNews,
     });
   } catch (error) {
     errorResponse(res, {
@@ -51,7 +73,6 @@ const handleGetAllNews = async (req, res, next) => {
     next(error);
   }
 };
-
 const handleGetSingleNews = async (req, res, next) => {
   try {
     const id = req.params.id;
